@@ -22,8 +22,9 @@ The reason why the model file is so large is because I did not delete some usele
 
 
 # model structure
-![auto teeth_model](https://github.com/huang229/auto_tooth_arrangement/assets/29627190/7999d5ae-ceb8-43ff-a593-4f3e00023315)
-![loss](https://github.com/huang229/auto_tooth_arrangement/assets/29627190/236e02c0-e7a6-4541-b6d1-c6dff3798b93)
+![auto teeth_model](https://github.com/huang229/auto_tooth_arrangement/assets/29627190/4ecfe3bb-a47b-46d4-8ae5-2a078bf42811)
+
+![loss](https://github.com/huang229/auto_tooth_arrangement/assets/29627190/62a6fb62-d9c6-4110-be2d-63240e54d5ce)
 
 
 # The reason for this design：
