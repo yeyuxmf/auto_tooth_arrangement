@@ -16,6 +16,7 @@
 5. https://github.com/facebookresearch/mae. Mainly refer to the model structure section.
 6. https://github.com/liucongg/GPT2-NewsTitle.
 7. https://github.com/jadore801120/attention-is-all-you-need-pytorch.
+8. https://github.com/graykode/nlp-tutorial.
 
    
 # model .pth
