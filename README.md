@@ -56,6 +56,7 @@ The reason why the model file is so large is because I did not delete some usele
 python main.py
 
 Pre trained models need to be loaded, otherwise it will be difficult to converge.
+From zero training: I first train one data, then two, then four, then eight, then 16, then 32, and finally go to train big data. Adjust the learning rate every time of training to ensure convergence, as the next pre training model.
 # test
 python test_rotate.py
 
