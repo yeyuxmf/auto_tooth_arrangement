@@ -52,6 +52,9 @@ The reason why the model file is so large is because I did not delete some usele
 
 3.pytorch3D 0.7.4
 
+# Disadvantages of the model
+Starting from scratch is quite cumbersome and difficult. It is best to load the pre trained model I provided, and friends who are interested in it can also make improvements in the future.
+
 # Train  
 python main.py
 
