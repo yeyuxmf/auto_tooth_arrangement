@@ -64,13 +64,16 @@ python test_rotate.py
 医生对患者进行牙齿矫正，并不是所有的牙齿都会变化，只是少数的几颗牙齿或者部分牙齿的位姿发生变化。比如患者只有切牙的位姿畸形，那么可能只移动和旋转切牙，或者连同切牙附近的侧切牙和尖牙一起移动和旋转，后面的前磨牙和磨牙在正畸治疗过程中可能是毫无变化的，因此模型1设计不合理。医生对患者进行牙齿正畸治疗，往往参考了牙弓和没有畸形的牙齿的位姿等等。因此可以理解为在参考正确的牙齿位姿的基础上仅对部分畸形牙齿做相对位姿调整，也可能是来回动态调整过程（那畸形牙及邻牙）。就像NLP中的语言模型一样，使用encoder得到的特征和已预测的单词去预测下一个单词。
 
 1.model structure:
-![model 2](https://github.com/huang229/auto_tooth_arrangement/assets/29627190/3da5152d-9a30-471b-8890-9585c1c8a7e5)
-![model 3](https://github.com/huang229/auto_tooth_arrangement/assets/29627190/5b16095f-72b2-4370-bd07-ee45839b8009)
+![model 2](https://github.com/huang229/auto_tooth_arrangement/assets/29627190/4e826da7-3057-4b62-941e-92d233b45068)
+
+![model 3](https://github.com/huang229/auto_tooth_arrangement/assets/29627190/a37b9cd2-a6c8-47ba-b40d-5fbff314cb0c)
+
 Note: After the experiment, the loss value decreased by 5 times again, and the model testing effect was too good, so the implementation of the gt part was hidden.
 
 
 There is also a simple design. The doctor's orthodontic treatment as understood above only applies pose changes to some deformed teeth. Therefore, it is possible to consider changing the loss on Model 1 by adding a mask to calculate the loss value only for teeth with pose changes, or the weight of the loss value for teeth with unchanged pose is very small. It does not need to be a prediction of teeth that require pose changes like Model 2 and Model 3.还有一种简单设计。上面理解的医生正畸治疗仅对部分畸形牙齿做位姿变化，因此，可以考虑在模型1上对损失做变化，通过添加mask，仅对有位姿变化的牙齿计算损值，或者位姿不变的牙齿的损失值权重非常小。它就不必像模型2和模型3那样是一颗一颗的预测需要进行位姿变化的牙齿。
-![mask loss](https://github.com/huang229/auto_tooth_arrangement/assets/29627190/10f219c8-84ba-4021-b7fa-6cf3389622e7)
+![mask loss](https://github.com/huang229/auto_tooth_arrangement/assets/29627190/42744bbf-6f5b-4eb1-8ec0-93d6a32ad978)
+
 
 2.Collision issues：
 By voxelizing the mesh, it can effectively represent the collision overlap between teeth, such as minimizing the loss value in the overlapping area.
