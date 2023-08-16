@@ -54,6 +54,7 @@ The reason why the model file is so large is because I did not delete some usele
 
 # Train
 python main.py
+Pre trained models need to be loaded, otherwise it will be difficult to converge.
 # test
 python test_rotate.py
 
