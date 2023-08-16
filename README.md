@@ -52,9 +52,9 @@ The reason why the model file is so large is because I did not delete some usele
 
 3.pytorch3D 0.7.4
 
-# Train
+# Train  Pre trained models need to be loaded, otherwise it will be difficult to converge.
 python main.py
-Pre trained models need to be loaded, otherwise it will be difficult to converge.
+
 # test
 python test_rotate.py
 
