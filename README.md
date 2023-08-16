@@ -13,6 +13,7 @@
 2. Tooth_Alignment_Network_Based_on_Landmark_Constraints_and_Hierarchical_Graph_Structure.
 3. ViT：An Image is Worth 16x16 Words: Transformers for Image Recognition at Scale.
 4. https://github.com/ziyangyeh/TANet-Pytorch.    (Thank you very much for the author's communication.)
+5. https://github.com/facebookresearch/mae. Mainly refer to the model structure section.
 
    
 # model .pth
