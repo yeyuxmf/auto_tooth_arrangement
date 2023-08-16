@@ -13,7 +13,7 @@
 2. Tooth_Alignment_Network_Based_on_Landmark_Constraints_and_Hierarchical_Graph_Structure.
 3. ViT：An Image is Worth 16x16 Words: Transformers for Image Recognition at Scale.
 4. https://github.com/ziyangyeh/TANet-Pytorch.    (Thank you very much for the author's communication.)
-5. https://github.com/facebookresearch/mae. Mainly refer to the model structure section.
+5. https://github.com/facebookresearch/mae. (Mainly refer to the model structure section.)
 6. https://github.com/liucongg/GPT2-NewsTitle.
 7. https://github.com/jadore801120/attention-is-all-you-need-pytorch.
 8. https://github.com/graykode/nlp-tutorial.
