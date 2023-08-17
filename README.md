@@ -59,7 +59,7 @@ python main.py
 Alternatively, replace the optimizer. opt = optim.Adam(model.parameters(), lr=args.lr, weight_decay=1e-4)
 
 2.I am accustomed to conducting experiments step by step, such as: 
-From zero training: I first train one data, then two, then four, then eight, then 16, then 32, and finally go to train big data. Adjust the learning rate every time of training to ensure convergence, as the next pre training model.
+ From zero training: I first train one data, then two, then four, then eight, then 16, then 32, and finally go to train big data. Adjust the learning rate every time of training to ensure convergence, as the next pre training model.
 # test
 python test_rotate.py
 
