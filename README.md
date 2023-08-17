@@ -55,9 +55,10 @@ The reason why the model file is so large is because I did not delete some usele
 # Train  
 python main.py
 
-Pre trained models need to be loaded. Otherwise, training your own data from scratch will be difficult to converge.
+1.Pre trained models need to be loaded. Otherwise, training your own data from scratch will be difficult to converge. 
 Alternatively, replace the optimizer. opt = optim.Adam(model.parameters(), lr=args.lr, weight_decay=1e-4)
-I am accustomed to conducting experiments step by step, such as:
+
+2.I am accustomed to conducting experiments step by step, such as: 
 From zero training: I first train one data, then two, then four, then eight, then 16, then 32, and finally go to train big data. Adjust the learning rate every time of training to ensure convergence, as the next pre training model.
 # test
 python test_rotate.py
