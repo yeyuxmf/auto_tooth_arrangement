@@ -57,6 +57,7 @@ python main.py
 
 1.Pre trained models need to be loaded. Otherwise, training your own data from scratch will be difficult to converge. 
 Alternatively, replace the optimizer. opt = optim.Adam(model.parameters(), lr=args.lr, weight_decay=1e-4)
+
 Note: When using your own data, preprocessing may vary, and you need to calculate the values of your rotation and translation matrices to obtain gdofs and gtrans.
 
 2.I am accustomed to conducting experiments step by step, such as: 
