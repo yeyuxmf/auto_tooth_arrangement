@@ -57,6 +57,7 @@ python main.py
 
 1.Pre trained models need to be loaded. Otherwise, training your own data from scratch will be difficult to converge. 
 Alternatively, replace the optimizer. opt = optim.Adam(model.parameters(), lr=args.lr, weight_decay=1e-4)
+Note: When using your own data, preprocessing may vary, and you need to calculate the values of your rotation and translation matrices to obtain gdofs and gtrans.
 
 2.I am accustomed to conducting experiments step by step, such as: 
  From zero training: I first train one data, then two, then four, then eight, then 16, then 32, and finally go to train big data. Adjust the learning rate every time of training to ensure convergence, as the next pre training model.
