@@ -97,9 +97,8 @@ There is also a simple design. The doctor's orthodontic treatment as understood 
 
 2.Collision issues：
 By voxelizing the mesh, it can effectively represent the collision overlap between teeth, such as minimizing the loss value in the overlapping area.
-Reference paper: Mesh R-CNN 
-
-https://arxiv.org/pdf/1906.02739.pdf
+Reference paper: Mesh R-CNN https://arxiv.org/pdf/1906.02739.pdf
+You can also directly refer to the collision loss of meshes. https://github.com/huang229/mesh_collision_loss
 
 For automatic orthodontic treatment, collision is a key core technical issue that is too important, and this part of the model structure design will no longer be displayed. Those who are interested can imagine for themselves. This is also an issue that has been avoided in published papers.
 
