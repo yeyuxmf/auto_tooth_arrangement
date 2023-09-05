@@ -58,12 +58,12 @@ python main.py
 1.Pre trained models need to be loaded. Otherwise, training your own data from scratch will be difficult to converge. 
 Alternatively, replace the optimizer. opt = optim.Adam(model.parameters(), lr=args.lr, weight_decay=1e-4)
 
-2. When using your own data, preprocessing may vary, and you need to calculate the values of your rotation and translation matrices to obtain gdofs and gtrans.
+2.When using your own data, preprocessing may vary, and you need to calculate the values of your rotation and translation matrices to obtain gdofs and gtrans.
+
+3.If there are more than 300 dental data samples, it is recommended to sample each sample approximately 10 times. If the dental data is less than 300, it is recommended to sample 10-20 times for each bite. Because this is random sampling and has non-uniformity, using farthest point sampling is too time-consuming and not advisable.
+
+4.The initial training suggestion is to only turn on reconstruction, angle, and translation loss. After the model converges to the minimum, fine tuning can be performed to turn on the metric_ Loss and Spatial_ Relationship_ Loss function (loss of center symmetry of left and right teeth and spatial relationship between adjacent teeth). Adjust the weights according to your needs.
    
-3. If there are more than 300 dental data samples, it is recommended to sample each sample approximately 10 times. If the dental data is less than 300, it is recommended to sample 10-20 times for each bite. Because this is random sampling and has non-uniformity, using farthest point sampling is too time-consuming and not advisable.
-
-4. The initial training suggestion is to only turn on reconstruction, angle, and translation loss. After the model converges to the minimum, fine tuning can be performed to turn on the metric_ Loss and Spatial_ Relationship_ Loss function (loss of center symmetry of left and right teeth and spatial relationship between adjacent teeth). Adjust the weights according to your needs.
-
 5.I am accustomed to conducting experiments step by step, such as: 
  From zero training: I first train one data, then two, then four, then eight, then 16, then 32, and finally go to train big data. Adjust the learning rate every time of training to ensure convergence, as the next pre training model.
 # test
