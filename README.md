@@ -26,7 +26,7 @@
 The reason why the model file is so large is because I did not delete some useless parameters.
 # Visualization Tool Installation Package
 链接：https://pan.baidu.com/s/1SMPms9_GoujxcmbTCV0K3Q 
-提取码：fiid
+提取码：fiid  
 This is a 3D visualization tool that supports visualization of stl files and point cloud txt file formats.
 
 # model structure
