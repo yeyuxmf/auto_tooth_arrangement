@@ -97,7 +97,9 @@ There is also a simple design. The doctor's orthodontic treatment as understood 
 
 2.Collision issues：
 By voxelizing the mesh, it can effectively represent the collision overlap between teeth, such as minimizing the loss value in the overlapping area.
-Reference paper: Mesh R-CNN https://arxiv.org/pdf/1906.02739.pdf
+Reference paper: 
+  a.Mesh R-CNN https://arxiv.org/pdf/1906.02739.pdf
+  b.Object Rearrangement Using Learned Implicit Collision Functions
 
 You can also directly refer to the collision loss of meshes(my other project). https://github.com/huang229/mesh_collision_loss
 
