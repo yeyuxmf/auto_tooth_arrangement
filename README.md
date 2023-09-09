@@ -55,7 +55,7 @@ This is a 3D visualization tool that supports visualization of stl files and poi
 2.pytorch 11.3.1
 
 3.pytorch3D 0.7.4    
-   Considering that some friends are unable to install Pytorch3D under Windows, here is an installation package for Pytorch3D. I am using Conda 4.10.3. You need to download and unzip the file, and place the corresponding file directly under the site packages directory in your environment.  For example, my path is: ...Anaconda3\envs\teeth\Lib\site-packages
+   Considering that some friends are unable to install Pytorch3D under Windows, here is an installation package for Pytorch3D. I am using Conda 4.10.3. You need to download and unzip the file, and place the corresponding file directly under the site packages directory in your environment.  For example, my path is: ...Anaconda3\envs\teeth\Lib\site-packages        
 链接：https://pan.baidu.com/s/1P4GbtMSaVG4AbaGcIMDBlQ 
 提取码：an2u
 
