@@ -116,9 +116,10 @@ For automatic orthodontic treatment, collision is a key core technical issue tha
 
 # Medical constraints
 1. Each tooth has its own medical feature points, such as neighboring points, tangential points, cusps, and so on. These feature points all have neighboring or contact relationships, which can minimize their distance.
+
 2. The tooth arrangement should not detach from the alveolar bone. Can we calculate a dental arch curve based on the alveolar bone and tooth feature points, and then sample the dental arch curve to minimize the distance between a certain feature point of the tooth and the sampling point.
    
 # License and Citation
-1.Without permission, the design concept of this model shall not be used for commercial purposes, profit seeking, etc.
+1. Without permission, the design concept of this model shall not be used for commercial purposes, profit seeking, etc.
 
-2.If you refer to the design concept of this model for theoretical research and publication of papers on automatic tooth arrangement, please also add a reference.
+2. If you refer to the design concept of this model for theoretical research and publication of papers on automatic tooth arrangement, please also add a reference.
