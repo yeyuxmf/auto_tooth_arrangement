@@ -114,6 +114,10 @@ For automatic orthodontic treatment, collision is a key core technical issue tha
 3.According to the assumptions of Model 2 and Model 3, using reinforcement learning to predict the position of the next deformed tooth would be a perfect design. Because as mentioned above, orthodontics is a process in which doctors dynamically adjust deformed teeth back and forth (repeatedly).按照模型2和模型3的设想，如果在预测下一颗畸形牙齿的位姿时使用强化学习，将是完美的设计。因为上面提到牙齿正畸更是医生对畸形牙齿来回(反复)动态调整的过程。
 
 
+# Medical constraints
+1. Each tooth has its own medical feature points, such as neighboring points, tangential points, cusps, and so on. These feature points all have neighboring or contact relationships, which can minimize their distance.
+2. The tooth arrangement should not detach from the alveolar bone. Can we calculate a dental arch curve based on the alveolar bone and tooth feature points, and then sample the dental arch curve to minimize the distance between a certain feature point of the tooth and the sampling point.
+   
 # License and Citation
 1.Without permission, the design concept of this model shall not be used for commercial purposes, profit seeking, etc.
 
