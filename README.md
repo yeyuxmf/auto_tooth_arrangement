@@ -91,8 +91,6 @@ python test_rotate.py
 1.model structure:
 ![model 2](https://github.com/huang229/auto_tooth_arrangement/assets/29627190/4e826da7-3057-4b62-941e-92d233b45068)
 
-![model 3](https://github.com/huang229/auto_tooth_arrangement/assets/29627190/a37b9cd2-a6c8-47ba-b40d-5fbff314cb0c)
-
 Note: After the experiment, the model testing effective, the implementation of the gt part was hidden(Not convenient for discussion, you need to design it yourself).
 The final loss value on big data is as follows:
 ![loss value](https://github.com/huang229/auto_tooth_arrangement/assets/29627190/238a010d-b587-4ccb-aa46-ef41516e29d8)
