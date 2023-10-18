@@ -28,7 +28,7 @@ The reason why the model file is so large is because I did not delete some usele
 Download geomagic2013 online and install it yourself.
 This is a 3D visualization tool that supports visualization of stl files and point cloud txt file formats.
 
-# model structure
+# Model structure
 ![auto teeth_model](https://github.com/huang229/auto_tooth_arrangement/assets/29627190/4ecfe3bb-a47b-46d4-8ae5-2a078bf42811)
 
 ![loss](https://github.com/huang229/auto_tooth_arrangement/assets/29627190/1dd60892-cbe9-47a5-9a0c-7b9c2b4a478f)
