@@ -56,15 +56,11 @@ This is a 3D visualization tool that supports visualization of stl files and poi
 2.pytorch 11.3.1
 
 3.pytorch3D 0.7.4    
-   Considering that some friends are unable to install Pytorch3D under Windows, here is an installation package for Pytorch3D. I am using Conda 4.10.3. You need to download and unzip the file, and place the corresponding file directly under the site packages directory in your environment.  For example, my path is: ...Anaconda3\envs\teeth\Lib\site-packages        
-链接：https://pan.baidu.com/s/1P4GbtMSaVG4AbaGcIMDBlQ 
-提取码：an2u
 
 # Train  
 python main.py
 
-1.Pre trained models need to be loaded. Otherwise, training your own data from scratch will be difficult to converge. 
-Alternatively, replace the optimizer. opt = optim.Adam(model.parameters(), lr=args.lr, weight_decay=1e-4)
+1.Replace the optimizer. opt = optim.Adam(model.parameters(), lr=args.lr, weight_decay=1e-4)
 
 2.When using your own data, preprocessing may vary, and you need to calculate the values of your rotation and translation matrices to obtain gdofs and gtrans.
 
@@ -72,8 +68,6 @@ Alternatively, replace the optimizer. opt = optim.Adam(model.parameters(), lr=ar
 
 4.The initial training suggestion is to only turn on reconstruction, angle, and translation loss. After the model converges to the minimum, fine tuning can be performed to turn on the metric_ Loss and Spatial_ Relationship_ Loss function (loss of center symmetry of left and right teeth and spatial relationship between adjacent teeth). Adjust the weights according to your needs.
    
-5.I am accustomed to conducting experiments step by step, such as: 
- From zero training: I first train one data, then two, then four, then eight, then 16, then 32, and finally go to train big data. Adjust the learning rate every time of training to ensure convergence, as the next pre training model.
 # test
 python test_rotate.py
 
