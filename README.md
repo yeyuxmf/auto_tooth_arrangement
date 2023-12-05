@@ -5,7 +5,7 @@
 
 3.This code is only for Model 1 and does not consider missing teeth. Reference paper for missing teeth, valid.
 
-4.It does not involve the inevitable core technology in dental alignment.
+4.It does not involve the inevitable core technology in dental alignment.However, it is for academic research only and may not be used for commercial purposes without permission.
 
 
 # Reference:
