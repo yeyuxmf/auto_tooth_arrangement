@@ -29,7 +29,8 @@ Download geomagic2013 online and install it yourself.
 This is a 3D visualization tool that supports visualization of stl files and point cloud txt file formats.
 
 # Model structure
-![auto teeth_model](https://github.com/huang229/auto_tooth_arrangement/assets/29627190/4ecfe3bb-a47b-46d4-8ae5-2a078bf42811)
+![auto teeth_model](https://github.com/huang229/auto_tooth_arrangement/assets/29627190/bb9f0579-2108-4f08-bb86-ac30cb37709d)
+
 
 ![loss](https://github.com/huang229/auto_tooth_arrangement/assets/29627190/1dd60892-cbe9-47a5-9a0c-7b9c2b4a478f)
 
