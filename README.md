@@ -84,7 +84,8 @@ python test_rotate.py
 医生对患者进行牙齿矫正，并不是所有的牙齿都会变化，只是少数的几颗牙齿或者部分牙齿的位姿发生变化。比如患者只有切牙的位姿畸形，那么可能只移动和旋转切牙，或者连同切牙附近的侧切牙和尖牙一起移动和旋转，后面的前磨牙和磨牙在正畸治疗过程中可能是毫无变化的，因此模型1设计不合理。医生对患者进行牙齿正畸治疗，往往参考了牙弓和没有畸形的牙齿的位姿等等。因此可以理解为在参考正确的牙齿位姿的基础上仅对部分畸形牙齿做相对位姿调整，也可能是来回动态调整过程（那畸形牙及邻牙）。就像NLP中的语言模型一样，使用encoder得到的特征和已预测的单词去预测下一个单词。
 
 1.model structure:
-![model 2](https://github.com/huang229/auto_tooth_arrangement/assets/29627190/4e826da7-3057-4b62-941e-92d233b45068)
+![model 2](https://github.com/huang229/auto_tooth_arrangement/assets/29627190/ff172d69-94cd-4274-8812-862ae392d34c)
+
 
 Note: After the experiment, the model testing effective, the implementation of the gt part was hidden(Not convenient for discussion, you need to design it yourself).
 The final loss value on big data is as follows:
