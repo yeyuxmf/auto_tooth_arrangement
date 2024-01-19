@@ -80,7 +80,7 @@ python test_rotate.py
 2.I hope to have like-minded friends to discuss together. Leave QQ for easy communication.
 
 
-# Appendix
+# Appendix1
 1.When doctors perform dental correction on patients, not all teeth will change, but only a few teeth or some of their positions will change. For example, if the patient only has a deformed position of the incisors, they may only move and rotate the incisors, or move and rotate them together with the lateral incisors and canines near the incisors. The posterior premolars and molars may remain unchanged during orthodontic treatment, so the design of Model 1 is unreasonable. Doctors often refer to the position of dental arches and teeth without deformities when performing orthodontic treatment on patients. Therefore, it can be understood as only adjusting the relative posture of some deformed teeth based on referencing the correct tooth posture, or it may be a back and forth dynamic adjustment process (for deformed teeth and adjacent teeth).Just like the language model in NLP, using the features obtained by the encoder and the predicted words to predict the next word.
 医生对患者进行牙齿矫正，并不是所有的牙齿都会变化，只是少数的几颗牙齿或者部分牙齿的位姿发生变化。比如患者只有切牙的位姿畸形，那么可能只移动和旋转切牙，或者连同切牙附近的侧切牙和尖牙一起移动和旋转，后面的前磨牙和磨牙在正畸治疗过程中可能是毫无变化的，因此模型1设计不合理。医生对患者进行牙齿正畸治疗，往往参考了牙弓和没有畸形的牙齿的位姿等等。因此可以理解为在参考正确的牙齿位姿的基础上仅对部分畸形牙齿做相对位姿调整，也可能是来回动态调整过程（那畸形牙及邻牙）。就像NLP中的语言模型一样，使用encoder得到的特征和已预测的单词去预测下一个单词。
 
@@ -108,8 +108,18 @@ You can also directly refer to the collision loss of meshes(my other project). h
 
 For automatic orthodontic treatment, collision is a key core technical issue that is too important, and this part of the model structure design will no longer be displayed. Those who are interested can imagine for themselves. This is also an issue that has been avoided in published papers.
 
-3.According to the assumptions of Model 2 and Model 3, using reinforcement learning to predict the position of the next deformed tooth would be a perfect design. Because as mentioned above, orthodontics is a process in which doctors dynamically adjust deformed teeth back and forth (repeatedly).按照模型2和模型3的设想，如果在预测下一颗畸形牙齿的位姿时使用强化学习，将是完美的设计。因为上面提到牙齿正畸更是医生对畸形牙齿来回(反复)动态调整的过程。
+3.According to the assumptions of Model 2 and Model 3, using reinforcement learning to predict the position of the next deformed tooth would be a perfect design. Because as mentioned above, orthodontics is a process in which doctors dynamically adjust deformed teeth back and forth (repeatedly).(按照模型2和模型3的设想，如果在预测下一颗畸形牙齿的位姿时使用强化学习，将是完美的设计。因为上面提到牙齿正畸更是医生对畸形牙齿来回(反复)动态调整的过程。)
 
+# Appendix2
+1. The situation of only some teeth moving and rotating during orthodontic treatment was discussed in the above Appendix1, that is to say, before orthodontic treatment, it is known which teeth will have position and posture changes and which teeth will not. Based on this consideration, can a learning constraint be established? The answer is yes, and this consideration will greatly improve the tooth arrangement effect. The following advantages: 1. It will minimize the collision after tooth arrangement; 2. The tooth arrangement result has a high degree of overlap with the doctor's tooth arrangement result.(上面附加1中讨论了牙齿正畸时仅部分牙齿移动和旋转的情况，也就是说正畸前就知道哪些牙齿会有位置和姿态变化，哪些牙齿没有，基于这个考虑能否建立一种学习约束，答案是肯定的，而且这种考虑会大幅度提升排牙效果，如下优势：1.它会尽可能减少排牙后的碰撞；2.排牙结果与医生排牙结果有高度的重叠。)
+![test1](https://github.com/huang229/auto_tooth_arrangement/assets/29627190/7fc49c4e-449d-4a7e-add8-98a200c3a40a)
+
+2. The same patient may receive different treatment plans from different doctors, resulting in different arch forms (such as nature arch, tappered arch, oval arch, and square arch) after orthodontics. At the same time, different types of dental arch tendencies may also receive different orthodontic results. In other words, different doctors may achieve diverse orthodontic results on the premise of medical compliance.(同一位患者，不同医生有不同的治疗方案，因此正畸后牙齿会呈现出不同的弓形（比如：nature arch, Tappered arch、Ovoid arch  and Square arch)，同时，不同一声倾向同一种弓形也会得到不同的正畸结果，也就是说不同医生会以符合医学为前提得到多样性的正畸结果。)
+![arch1](https://github.com/huang229/auto_tooth_arrangement/assets/29627190/a0d7d163-f93e-4bc2-a80c-8da6fa03fff1)
+![arch2](https://github.com/huang229/auto_tooth_arrangement/assets/29627190/d0f49ea7-a674-4f74-bb7b-9a362758f923)
+The above figure shows the overlap difference of different arch outputs.
+Here, the same tooth is displayed using a model to obtain five different arch outputs. In addition, it is easier to obtain different results for the same arch, which are not shown.
+Note: Additional 2 does not show any code or principle, and requires readers to think for themselves.(附加2不展示任何代码和原理，需读者自己思考。)
 
 # Medical constraints
 1. Each tooth has its own medical feature points, such as neighboring points, tangential points, cusps, and so on. These feature points all have neighboring or contact relationships, which can minimize their distance.
