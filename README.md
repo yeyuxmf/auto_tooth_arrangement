@@ -121,6 +121,9 @@ The above figure shows the overlap difference of different arch outputs.
 Here, the same tooth is displayed using a model to obtain five different arch outputs. In addition, it is easier to obtain different results for the same arch, which are not shown.
 Note: Additional 2 does not show any code or principle, and requires readers to think for themselves.(附加2不展示任何代码和原理，需读者自己思考。)
 
+# Appendix3
+The reinforcement learning mentioned in Appendix1 is feasible and has been verified.
+
 # Medical constraints
 1. Each tooth has its own medical feature points, such as neighboring points, tangential points, cusps, and so on. These feature points all have neighboring or contact relationships, which can minimize their distance.
 
