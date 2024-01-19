@@ -7,7 +7,8 @@
 
 4.It does not involve the inevitable core technology in dental alignment.However, it is for academic research only and may not be used for commercial purposes without permission.
 
-
+5. My purpose in establishing this git is to attract more contributions, lower the threshold(抛砖引玉，降低门槛), and hope that everyone can have different ideas. I hope to see new papers published with new ideas to promote automatic dental alignment in medicine.
+   
 # Reference:
 1. TANet: Towards Fully Automatic Tooth Arrangement.
 2. Tooth_Alignment_Network_Based_on_Landmark_Constraints_and_Hierarchical_Graph_Structure.
@@ -111,6 +112,7 @@ For automatic orthodontic treatment, collision is a key core technical issue tha
 3.According to the assumptions of Model 2 and Model 3, using reinforcement learning to predict the position of the next deformed tooth would be a perfect design. Because as mentioned above, orthodontics is a process in which doctors dynamically adjust deformed teeth back and forth (repeatedly).(按照模型2和模型3的设想，如果在预测下一颗畸形牙齿的位姿时使用强化学习，将是完美的设计。因为上面提到牙齿正畸更是医生对畸形牙齿来回(反复)动态调整的过程。)
 
 # Appendix2
+
 1. The situation of only some teeth moving and rotating during orthodontic treatment was discussed in the above Appendix1, that is to say, before orthodontic treatment, it is known which teeth will have position and posture changes and which teeth will not. Based on this consideration, can a learning constraint be established? The answer is yes, and this consideration will greatly improve the tooth arrangement effect. The following advantages: 1. It will minimize the collision after tooth arrangement; 2. The tooth arrangement result has a high degree of overlap with the doctor's tooth arrangement result.(上面附加1中讨论了牙齿正畸时仅部分牙齿移动和旋转的情况，也就是说正畸前就知道哪些牙齿会有位置和姿态变化，哪些牙齿没有，基于这个考虑能否建立一种学习约束，答案是肯定的，而且这种考虑会大幅度提升排牙效果，如下优势：1.它会尽可能减少排牙后的碰撞；2.排牙结果与医生排牙结果有高度的重叠。)
 ![test1](https://github.com/huang229/auto_tooth_arrangement/assets/29627190/7fc49c4e-449d-4a7e-add8-98a200c3a40a)
 
@@ -119,6 +121,7 @@ For automatic orthodontic treatment, collision is a key core technical issue tha
 ![arch2](https://github.com/huang229/auto_tooth_arrangement/assets/29627190/d0f49ea7-a674-4f74-bb7b-9a362758f923)
 The above figure shows the overlap difference of different arch outputs.
 Here, the same tooth is displayed using a model to obtain five different arch outputs. In addition, it is easier to obtain different results for the same arch, which are not shown.
+
 Note: Additional 2 does not show any code or principle, and requires readers to think for themselves.(附加2不展示任何代码和原理，需读者自己思考。)
 
 # Appendix3
@@ -128,6 +131,7 @@ The reinforcement learning mentioned in Appendix1 is feasible and has been verif
 1. Each tooth has its own medical feature points, such as neighboring points, tangential points, cusps, and so on. These feature points all have neighboring or contact relationships, which can minimize their distance.
 
 2. The tooth arrangement should not detach from the alveolar bone. Can we calculate a dental arch curve based on the alveolar bone and tooth feature points, and then sample the dental arch curve to minimize the distance between a certain feature point of the tooth and the sampling point.
+   
    
 # License and Citation
 1. Without permission, the design concept of this model shall not be used for commercial purposes, profit seeking, etc.
