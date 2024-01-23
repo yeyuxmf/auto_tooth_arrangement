@@ -126,6 +126,7 @@ Note: Additional 2 does not show any code or principle, and requires readers to 
 
 # Appendix3
 The reinforcement learning mentioned in Appendix1 is feasible and has been verified.
+Two design ideas: 1. Consider a single agent model, such as a robotic arm assembling objects in sequence; 2. Multi-agent linkage model, such as the 5vs5 game of League of Legends or Dota.
 
 # Medical constraints
 1. Each tooth has its own medical feature points, such as neighboring points, tangential points, cusps, and so on. These feature points all have neighboring or contact relationships, which can minimize their distance.
