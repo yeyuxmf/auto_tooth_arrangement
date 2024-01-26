@@ -1,5 +1,6 @@
 # Auto_tooth_arrangement(code: Model 1 application)
 大哥们，参考了，写论文请做出说明和添加引用。作为第一个深度学习排牙能直接运行的开源代码，效果如此之好，希望得到尊重。
+
 1.Automatically arrange teeth using neural networks. Applied to automatic orthodontic treatment of oral teeth.
 
 2.This is only an automatic arrangement of single jaw teeth (considering certain factors). It is easy to expand to full mouth teeth.
