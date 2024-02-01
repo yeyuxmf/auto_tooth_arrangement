@@ -116,11 +116,10 @@ For automatic orthodontic treatment, collision is a key core technical issue tha
 # Appendix2
 
 1. The situation of only some teeth moving and rotating during orthodontic treatment was discussed in the above Appendix1, that is to say, before orthodontic treatment, it is known which teeth will have position and posture changes and which teeth will not. Based on this consideration, can a learning constraint be established? The answer is yes, and this consideration will greatly improve the tooth arrangement effect. The following advantages: 1. It will minimize the collision after tooth arrangement; 2. The tooth arrangement result has a high degree of overlap with the doctor's tooth arrangement result.(上面附加1中讨论了牙齿正畸时仅部分牙齿移动和旋转的情况，也就是说正畸前就知道哪些牙齿会有位置和姿态变化，哪些牙齿没有，基于这个考虑能否建立一种学习约束，答案是肯定的，而且这种考虑会大幅度提升排牙效果，如下优势：1.它会尽可能减少排牙后的碰撞；2.排牙结果与医生排牙结果有高度的重叠。)
-![test1](https://github.com/huang229/auto_tooth_arrangement/assets/29627190/7fc49c4e-449d-4a7e-add8-98a200c3a40a)
+
 
 2. The same patient may receive different treatment plans from different doctors, resulting in different arch forms (such as nature arch, tappered arch, oval arch, and square arch) after orthodontics. At the same time, different types of dental arch tendencies may also receive different orthodontic results. In other words, different doctors may achieve diverse orthodontic results on the premise of medical compliance.(同一位患者，不同医生有不同的治疗方案，因此正畸后牙齿会呈现出不同的弓形（比如：nature arch, Tappered arch、Ovoid arch  and Square arch)，同时，不同医生倾向同一种弓形也会得到不同的正畸结果，也就是说不同医生会以符合医学为前提得到多样性的正畸结果。)
-![arch1](https://github.com/huang229/auto_tooth_arrangement/assets/29627190/a0d7d163-f93e-4bc2-a80c-8da6fa03fff1)
-![arch2](https://github.com/huang229/auto_tooth_arrangement/assets/29627190/d0f49ea7-a674-4f74-bb7b-9a362758f923)
+
 The above figure shows the overlap difference of different arch outputs.
 Here, the same tooth is displayed using a model to obtain five different arch outputs. In addition, it is easier to obtain different results for the same arch, which are not shown.
 
