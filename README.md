@@ -136,6 +136,5 @@ Two design ideas: 1. Consider a single agent model, such as a robotic arm assemb
    
 # License and Citation
 1. Without permission, the design concept of this model shall not be used for commercial purposes, profit seeking, etc.
-
-大哥们，参考了，写论文请做出说明和添加引用。作为第一个深度学习排牙能直接运行的开源代码，效果如此之好。
 2. If you refer to the design concept of this model for theoretical research and publication of papers on automatic tooth arrangement, please also add a reference.
+大哥们，参考了，写论文请做出说明和添加引用。作为第一个深度学习排牙能直接运行的开源代码，效果如此之好。
