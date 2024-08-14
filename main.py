@@ -70,7 +70,8 @@ def train(args, io):
 
     if args.use_sgd:
         print("Use SGD")
-        opt = optim.SGD([{'params': model.local_fea.parameters(), 'lr': args.lr}], lr=args.lr, momentum=args.momentum, weight_decay=1e-4)
+        opt = optim.Adam(model.parameters(), lr=args.lr, weight_decay=1e-4)
+        #opt = optim.SGD([{'params': model.local_fea.parameters(), 'lr': args.lr}], lr=args.lr, momentum=args.momentum, weight_decay=1e-4)
         # opt = optim.SGD([
         #     {'params': model.teeth_fea.parameters(), 'lr': args.lr},
         #     {'params': model.global_fea.parameters(), 'lr': args.lr},
