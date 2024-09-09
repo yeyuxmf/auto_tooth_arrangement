@@ -137,8 +137,10 @@ Two design ideas: 1. Consider a single agent model, such as a robotic arm assemb
 
 # Appendix4
 It has been more than a year. This is the integration of automatic tooth arrangement, and the model supports automatic alignment of any number of missing teeth (up to 32 teeth).
+
 This is the effect over a year ago, with only renderings, but no open-source code. This can be seen as a response to those who have doubts about whether this open-source project can be extended to align the entire jaw of teeth. I think the key lies in whether one understands the transformer, a deep learning module. If one understands it, then they can expand it; if not, they may not be able to complete the task.
-The effect is as follows, which is roughly an average performance.
+
+The effect is as follows, This should be a mediocre rendering, and it's the only ready-made picture I have.
 ![model arrangement](https://github.com/user-attachments/assets/27ca9e1a-7300-4dc1-895f-a6aaffa11da8)
 
 
