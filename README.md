@@ -130,11 +130,6 @@ Note: Additional 2 does not show any code or principle, and requires readers to 
 The reinforcement learning mentioned in Appendix1 is feasible and has been verified.
 Two design ideas: 1. Consider a single agent model, such as a robotic arm assembling objects in sequence; 2. Multi-agent linkage model, such as the 5vs5 game of League of Legends or Dota.
 
-# Medical constraints
-1. Each tooth has its own medical feature points, such as neighboring points, tangential points, cusps, and so on. These feature points all have neighboring or contact relationships, which can minimize their distance.
-
-2. The tooth arrangement should not detach from the alveolar bone. Can we calculate a dental arch curve based on the alveolar bone and tooth feature points, and then sample the dental arch curve to minimize the distance between a certain feature point of the tooth and the sampling point.
-
 # Appendix4
 It has been more than a year. This is the integration of automatic tooth arrangement, and the model supports automatic alignment of any number of missing teeth (up to 32 teeth).
 
@@ -143,7 +138,10 @@ This is the effect over a year ago, with only renderings, but no open-source cod
 The effect is as follows, This should be a mediocre rendering, and it's the only ready-made picture I have.
 ![model arrangement](https://github.com/user-attachments/assets/27ca9e1a-7300-4dc1-895f-a6aaffa11da8)
 
+# Medical constraints
+1. Each tooth has its own medical feature points, such as neighboring points, tangential points, cusps, and so on. These feature points all have neighboring or contact relationships, which can minimize their distance.
 
+2. The tooth arrangement should not detach from the alveolar bone. Can we calculate a dental arch curve based on the alveolar bone and tooth feature points, and then sample the dental arch curve to minimize the distance between a certain feature point of the tooth and the sampling point.
    
 # License and Citation
 1. Without permission, the design concept of this model shall not be used for commercial purposes, profit seeking, etc.
