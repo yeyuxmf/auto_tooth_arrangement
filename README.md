@@ -9,6 +9,7 @@
 4.It does not involve the inevitable core technology in dental alignment.However, it is for academic research only and may not be used for commercial purposes without permission.
 
 5.My purpose in establishing this git is to attract more contributions, lower the threshold(抛砖引玉，降低门槛), and hope that everyone can have different ideas. I hope to see new papers published with new ideas to promote automatic dental alignment in medicine.
+
 6.During the training process, it is crucial to enable automatic augmentation of angles and translations to ensure that each training data set is unique. This is extremely important as it simulates the pre-orthodontic tooth posture infinitely.
    
 # Reference:
