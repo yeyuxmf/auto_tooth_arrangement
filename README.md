@@ -28,6 +28,7 @@
 链接：https://pan.baidu.com/s/1nsectXx46bpWMqeVSbYnTQ 
 提取码：0chs    
 The reason why the model file is so large is because I did not delete some useless parameters.
+"I apologize for the delay; the model has been lost from the cloud storage. 
 # Visualization Tool Installation Package
 Download geomagic2013 online and install it yourself.
 This is a 3D visualization tool that supports visualization of stl files and point cloud txt file formats.
