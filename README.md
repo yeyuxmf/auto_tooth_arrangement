@@ -1,5 +1,5 @@
 # Auto_tooth_arrangement(code: Model 1 application)
-
+即将推出基于多目标函数约束的传统算法排牙和牙颌风格生成模型（生成某一风格的术前牙齿），在考虑是否写论文，暂不开源。
 1.Automatically arrange teeth using neural networks. Applied to automatic orthodontic treatment of oral teeth.
 
 2.This is only an automatic arrangement of single jaw teeth (considering certain factors). It is easy to expand to full mouth teeth.
@@ -11,7 +11,8 @@
 5.My purpose in establishing this git is to attract more contributions, lower the threshold(抛砖引玉，降低门槛), and hope that everyone can have different ideas. I hope to see new papers published with new ideas to promote automatic dental alignment in medicine.
 
 6.During the training process, it is crucial to enable automatic augmentation of angles and translations to ensure that each training data set is unique. This is extremely important as it simulates the pre-orthodontic tooth posture infinitely.
-   
+
+
 # Reference:
 1. TANet: Towards Fully Automatic Tooth Arrangement.
 2. Tooth_Alignment_Network_Based_on_Landmark_Constraints_and_Hierarchical_Graph_Structure.
