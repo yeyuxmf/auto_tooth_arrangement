@@ -147,6 +147,20 @@ The effect is as follows, This should be a mediocre rendering, and it's the only
 1. Each tooth has its own medical feature points, such as neighboring points, tangential points, cusps, and so on. These feature points all have neighboring or contact relationships, which can minimize their distance.
 
 2. The tooth arrangement should not detach from the alveolar bone. Can we calculate a dental arch curve based on the alveolar bone and tooth feature points, and then sample the dental arch curve to minimize the distance between a certain feature point of the tooth and the sampling point.
+
+
+
+
+# Appendix5
+Traditional_Multi-Objective_Particle_Swarm_Optimization(MOPSO).py
+
+
+
+
+
+
+
+
    
 # License and Citation
 1. Without permission, the design concept of this model shall not be used for commercial purposes, profit seeking, etc.
