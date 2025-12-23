@@ -218,8 +218,26 @@ My capabilities are limited, for reference only.(水平有限，仅供参考)
 <img width="1247" height="899" alt="lbgfs_tooth_arrangement" src="https://github.com/user-attachments/assets/16874b2a-fd06-4989-aa57-5e0a7c0881c5" />
 1.Left: Pre-alignment state; the arch tangent and the tooth tangent are not coincident. Right: Post-alignment state; the arch tangent and the tooth tangent are perfectly coincident.
 
+5.5. Give up on collision detection(f5 and f6 ==0)
 
-   
+<img width="600" height="435" alt="1" src="https://github.com/user-attachments/assets/1d43e438-e882-403a-9f70-f767d1a52150" />
+
+5.6. Discussion
+
+1. The introduction of collision terms ($f_5$ and $f_6$) significantly interferes with the minimization of other energy functions ($f_1, f_2, f_3, f_4, f_7$), frequently leading to optimization collapse.
+引入碰撞后(f5和f6)，对其它能量函数(f1,f2,f3,f4,f7)的最小化非常明显，优化很容易崩溃。
+
+2. I propose to first generate the dental arch curve independently. Then, starting from the arch center and moving toward both sides, the teeth are sequentially arranged along the curve based on acceptable collision gaps. Simultaneously, the tangent of each tooth is rotated to align with the local tangent of the arch curve. Finally, the previously mentioned energy minimization is applied for fine-tuning. This strategy provides a high-quality initial configuration, effectively resolving the optimization collapse caused by the introduction of collision constraints.
+我认为先直接只算出牙弓曲线，然后牙齿依据可接受的碰撞间隙把牙弓从牙弓中心往两边一次排开，且同时牙齿切线旋转为牙弓切线方向；然后再使用上面的能量最小化微调牙齿排列，这样可以解决碰撞的引入造成的优化崩溃问题。
+
+3.Beyond the FA points and mesiodistal points used for tangent calculation, more feature points should be introduced to directly establish the tooth's Local Coordinate System (LCS). This would allow for a direct transformation (rotation and translation) of the tooth into the dental arch's local frame, resulting in a highly smooth initial arrangement. Following this rigid alignment, the energy minimization process can be applied to further optimize the placement.
+除了牙齿的FA点和计算切线中的近远中点，应该引入更多的特征点，比如直接获得牙齿的局部坐标系，这样可以把牙齿直接旋转到牙弓坐标系上，得到的排列结果就非常光滑。然后再根据能量最小化优化。
+
+4. If the mesiodistal width of each tooth is known, the proportional constraints for the equidistant points in $f_4$ can be calculated based on tooth width ratios. This approach yields significantly better constraint performance and a more realistic distribution.
+如果已知每颗牙齿的切线方向宽度，那么利用牙宽比例计算F4中的等分点，这样的约束效果更好。
+
+
+
 # License and Citation
 1. Without permission, the design concept of this model shall not be used for commercial purposes, profit seeking, etc.
 2. If you refer to the design concept of this model for theoretical research and publication of papers on automatic tooth arrangement, please also add a reference(to git).
