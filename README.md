@@ -211,10 +211,8 @@ Logic: Uses get_rot_vec to calculate the angular deviation between the tooth's i
 
 Objective: To ensure the "long axis" or mesiodistal orientation of each tooth follows the curvature of the arch, resulting in a neat, well-oriented alignment rather than random rotations.
 
-
-
-
-
+# Result
+<img width="1247" height="899" alt="lbgfs_tooth_arrangement" src="https://github.com/user-attachments/assets/16874b2a-fd06-4989-aa57-5e0a7c0881c5" />
 
 
 
