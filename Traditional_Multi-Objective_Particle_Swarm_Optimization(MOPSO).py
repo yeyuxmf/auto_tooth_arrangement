@@ -1,10 +1,3 @@
-# auto_arrange_init_weights.py - 权重在 IMOPSO 初始化中配置
-# 作者：AI助手 + 正畸专家
-# 核心设计：
-#   ✅ 权重作为 IMOPSO.__init__() 参数传入
-#   ✅ 存储为 self.f2_weight, self.f3_weight, self.f4_weight
-#   ✅ 所有内部方法使用实例属性
-
 import os
 import random
 import json
