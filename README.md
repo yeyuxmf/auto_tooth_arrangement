@@ -152,8 +152,64 @@ The effect is as follows, This should be a mediocre rendering, and it's the only
 
 
 # Appendix5
-Traditional_Multi-Objective_Particle_Swarm_Optimization(MOPSO).py
-Traditional_energy_minimization_arrangement(lbgfs).py
+
+Note: This is only a reference to the methods in the papers, not a reproduction.
+
+# Reference:
+1.Li H, Liu M. An automatic teeth arrangement method based on an intelligent optimization algorithm and the Frenet–Serret formula[J]. Biomedical Signal Processing and Control, 2025, 105: 107606.
+
+2.Ping Y, Wei G, Wei G, et al. A Rule-Based Optimization Method for Tooth Alignment[J]. IEEE Transactions on Visualization and Computer Graphics, 2025.
+
+# Application
+1.Traditional_Multi-Objective_Particle_Swarm_Optimization(MOPSO).py  (Reference 1)
+
+2.Traditional_energy_minimization_arrangement(lbgfs).py   (Reference 2)
+
+3.Traditional_tooth_mesh_collsion(c++vs2017)  (Implementing mesh-to-mesh collision detection between two teeth in C++.)
+
+# Multi-Objective Optimization Energy Functions1. 
+1. $f_1$: Curve Attachment Energy
+
+Logic: Calculates the minimum Euclidean distance between the tooth’s current center (FA point) and the fitted arch curve.
+
+Objective: To ensure all teeth are aligned along the predefined arch trajectory, preventing them from deviating from the intended track.
+
+2. $f_2$: Midline Symmetry Energy
+
+Logic: Specifically targets the central incisors (teeth 8 & 9) and lateral incisors (teeth 7 & 10) by calculating the difference in distance to the dental midline between symmetrical pairs.
+
+Objective: To maintain esthetic symmetry, ensuring the left and right anterior teeth are balanced relative to the facial midline.
+
+3. $f_3$: Position Persistence Energy (Displacement Constraint)
+
+Logic: Measures the average Euclidean distance between the current tooth position and its initial sampled position ($s_0$).
+
+Objective: To act as an "anchor," preventing the optimizer from making drastic, unstable leaps in tooth position while pursuing other objectives, thus ensuring a smooth optimization process.
+
+4. $f_4$: Ideal Distribution Energy (Spacing)
+
+Logic: Compares the current parametric position ($s_c$) of a tooth on the arch curve with its ideal proportional position ($s_{ideal}$) derived from the tooth numbering.
+
+Objective: To ensure even tooth distribution along the arch; for example, ensuring tooth 2 is near the start and tooth 15 is near the end, preventing localized crowding or excessive gaps.
+
+5. $f_5$: Hard Collision Penalty
+
+Logic: Invokes the C++ collision engine to apply a massive energy penalty when a penetration between two tooth meshes is detected (i.e., signed distance $d_{min} < 0$).
+
+Objective: To enforce physical constraints, preventing "interpenetration" between 3D dental models, which is a fundamental requirement for a valid dental setup.
+
+6. $f_6$: Proximal Contact Energy (Gap Goal)
+
+Logic: For adjacent teeth, it calculates the deviation between their actual minimum gap and the target contact distance ($margin\_max = 0.1$).
+
+Objective: To ensure adjacent teeth are neither colliding nor separated by gaps, simulating tight proximal contact (i.e., "closing spaces" in orthodontics).
+
+7. $f_7$: Axial Alignment Energy
+
+Logic: Uses get_rot_vec to calculate the angular deviation between the tooth's intrinsic mesiodistal vector and the local tangent of the arch curve.
+
+Objective: To ensure the "long axis" or mesiodistal orientation of each tooth follows the curvature of the arch, resulting in a neat, well-oriented alignment rather than random rotations.
+
 
 
 
