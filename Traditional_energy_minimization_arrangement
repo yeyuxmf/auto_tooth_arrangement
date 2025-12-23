@@ -8,12 +8,12 @@ from numpy.linalg import norm
 from scipy.spatial import KDTree
 from typing import Dict, List, Tuple
 from test_collision import ToothCollisionEngine
-engine = ToothCollisionEngine("H:/VSC++/mesh_collision/x64/Release/mesh_collision.dll")
+engine = ToothCollisionEngine("./mesh_collision/x64/Release/mesh_collision.dll")
 tooth_num = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16"]
 # -------------------- 1. 基础配置 (调参中心) --------------------
 class Config:
-    tdata_dir = 'I:/mesh_tooth_data/oral_scan/baixue/lower/'
-    feature_file = 'I:/mesh_tooth_data/oral_scan/baixue/lower/lower_landmarks.json'
+    tdata_dir = './lower/'
+    feature_file = './lower/lower_landmarks.json'
     out_dir = "./outputs/"
     p_type = "FA"
     max_iter = 100
