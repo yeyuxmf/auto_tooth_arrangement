@@ -216,11 +216,14 @@ My capabilities are limited, for reference only.(水平有限，仅供参考)
 5.4. Result
 
 <img width="1247" height="899" alt="lbgfs_tooth_arrangement" src="https://github.com/user-attachments/assets/16874b2a-fd06-4989-aa57-5e0a7c0881c5" />
+
 1.Left: Pre-alignment state; the arch tangent and the tooth tangent are not coincident. Right: Post-alignment state; the arch tangent and the tooth tangent are perfectly coincident.
+
 
 5.5. Give up on collision detection(f5 and f6 ==0)
 
 <img width="600" height="435" alt="1" src="https://github.com/user-attachments/assets/1d43e438-e882-403a-9f70-f767d1a52150" />
+
 
 5.6. Discussion
 
