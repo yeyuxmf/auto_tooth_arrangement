@@ -1,5 +1,6 @@
 # Auto_tooth_arrangement(code: Model 1 application)
-即将推出基于多目标函数约束的传统算法排牙和牙颌风格生成模型（生成某一风格的术前牙齿），在考虑是否写论文，暂不开源。
+Implementation of traditional tooth alignment methods based on two reference papers(Appendix5 参考两篇传统排牙文献，实现传统牙齿排列方法)。
+
 1.Automatically arrange teeth using neural networks. Applied to automatic orthodontic treatment of oral teeth.
 
 2.This is only an automatic arrangement of single jaw teeth (considering certain factors). It is easy to expand to full mouth teeth.
