@@ -1,0 +1,589 @@
+#CollisionDLL.h
+#ifndef COLLISION_DLL_H
+#define COLLISION_DLL_H
+
+// 只有定义了 COLLISION_EXPORTS 时才导出，否则视为导入
+#ifdef COLLISION_EXPORTS
+#define COLLISION_API __declspec(dllexport)
+#else
+#define COLLISION_API __declspec(dllimport)
+#endif
+
+extern "C" {
+	/**
+	 * @brief 初始化引擎：载入指定文件夹下的所有 STL 模型并完成预处理（简化与 AABB 树构建）
+	 * @param folderPath STL 文件夹路径（例如 "C:/TeethData/"）
+	 * @return 1 表示成功，0 表示失败
+	 */
+	COLLISION_API int InitCollisionEngine(const char* folderPath);
+
+	/**
+	 * @brief 执行碰撞计算
+	 * @param id1 第一个牙齿的 ID
+	 * @param mat1 第一个牙齿的 4x4 变换矩阵（16个 double，列主序）
+	 * @param id2 第二个牙齿的 ID
+	 * @param mat2 第二个牙齿的 4x4 变换矩阵（16个 double，列主序）
+	 * @param outDistance 输出参数，返回计算出的最短距离（正值为间隙，负值为穿透深度）
+	 * @return 1 表示发生穿透（distance < 0），0 表示未穿透
+	 */
+	COLLISION_API int ComputeToothCollision(int id1, double* mat1, int id2, double* mat2, double* outDistance);
+
+	/**
+	 * @brief 释放引擎资源，清理内存
+	 */
+	COLLISION_API void ReleaseCollisionEngine();
+}
+
+#endif#pragma once
+
+
+
+
+
+
+
+
+#CollisionEngine.h
+#ifndef COLLISION_ENGINE_H
+#define COLLISION_ENGINE_H
+
+#include "ToothEntity.h"
+#include <map>
+
+struct CollisionResult {
+	bool is_colliding;
+	double distance; 
+};
+
+class CollisionEngine {
+public:
+	void loadFromFolder(const std::string& folderPath);
+
+	CollisionResult computeCollision(int id1, const Eigen::Matrix4d& mat1,
+		int id2, const Eigen::Matrix4d& mat2);
+
+private:
+	std::map<int, std::shared_ptr<ToothEntity>> entities;
+	void initialize(const std::map<int, std::shared_ptr<MyMesh>>& meshMap);
+	OBB transformOBB(const OBB& local, const Eigen::Affine3d& T);
+	double calculateOBBGap(const OBB& a, const OBB& b);
+
+};
+
+#endif
+
+
+
+
+#ToothEntity.h
+#ifndef TOOTH_ENTITY_H
+#define TOOTH_ENTITY_H
+
+#ifndef _USE_MATH_DEFINES
+#define _USE_MATH_DEFINES
+#endif
+#ifndef NOMINMAX
+#define NOMINMAX
+#endif
+
+#include <OpenMesh/Core/Mesh/TriMesh_ArrayKernelT.hh>
+#include <OpenMesh/Core/IO/MeshIO.hh>
+#include <Eigen/Dense>
+#include <vector>
+#include <memory>
+#include <string>
+#include <algorithm>
+
+typedef OpenMesh::TriMesh_ArrayKernelT<> MyMesh;
+
+struct OBB {
+	Eigen::Vector3d center;
+	Eigen::Vector3d axes[3];
+	Eigen::Vector3d extents;
+};
+
+struct AABBNode {
+	Eigen::Vector3d minP, maxP;
+	int faceIdx;
+	std::shared_ptr<AABBNode> left, right;
+	bool isLeaf;
+};
+
+class ToothEntity {
+public:
+	int id;
+	std::shared_ptr<MyMesh> mesh;
+	OBB localOBB;
+	std::vector<Eigen::Vector3d> probeVertices; // 表面采样位置
+	std::vector<Eigen::Vector3d> probeNormals;  // 策略B所需的表面法线
+	std::shared_ptr<AABBNode> aabbTree;
+
+	ToothEntity(int _id, std::shared_ptr<MyMesh> _mesh);
+
+	// 核心：增加 scanDir 参数以支持背面判定过滤
+	double computeMeshDistance(const Eigen::Vector3d& p, const Eigen::Vector3d& scanDir) const;
+
+private:
+	void precompute();
+	std::shared_ptr<AABBNode> buildAABB(std::vector<int>& fIdxs);
+	// 4参数定义，必须与实现体完全一致以避免 LNK2001
+	double pointTriangleDistanceSq(const Eigen::Vector3d& p, int fIdx,
+		Eigen::Vector3d& outNormal, Eigen::Vector3d& outClosestP) const;
+};
+
+#endif
+
+
+
+
+
+
+
+#CollisionEngine.cpp
+
+#include "CollisionDLL.h"
+#include "CollisionEngine.h"
+#include <OpenMesh/Tools/Decimater/DecimaterT.hh>
+#include <OpenMesh/Tools/Decimater/ModQuadricT.hh>
+#include <io.h>
+#include <iostream>
+#include <algorithm>
+
+
+
+// 在 CollisionEngine 类中添加此方法
+
+void saveResultMesh(std::shared_ptr<ToothEntity> entity, const Eigen::Affine3d& T, const std::string& filePath) {
+	if (!entity || !entity->mesh) return;
+
+	// 1. 拷贝一份当前的 Mesh 数据
+	MyMesh tempMesh = *(entity->mesh);
+
+	// 2. 变换所有顶点到世界坐标系
+	for (auto vh : tempMesh.vertices()) {
+		auto& p = tempMesh.point(vh);
+		// 执行矩阵乘法: p_world = T * p_local
+		Eigen::Vector3d pWorld = T * Eigen::Vector3d(p[0], p[1], p[2]);
+
+		// 更新坐标
+		tempMesh.set_point(vh, MyMesh::Point(pWorld.x(), pWorld.y(), pWorld.z()));
+	}
+
+	// 3. 写入文件 (STL 格式)
+	OpenMesh::IO::write_mesh(tempMesh, filePath);
+}
+
+
+
+
+
+
+
+
+
+// --- 辅助功能：Mesh 简化 ---
+void simplifyMesh(std::shared_ptr<MyMesh> mesh, size_t targetFaces) {
+	if (mesh->n_faces() <= targetFaces) return;
+	typedef OpenMesh::Decimater::DecimaterT<MyMesh> Decimater;
+	typedef OpenMesh::Decimater::ModQuadricT<MyMesh>::Handle HModQuadric;
+
+	Decimater decimater(*mesh);
+	HModQuadric hModQuadric;
+	decimater.add(hModQuadric);
+	decimater.module(hModQuadric).unset_max_err();
+	decimater.initialize();
+	decimater.decimate_to_faces(targetFaces);
+	mesh->garbage_collection();
+	mesh->update_normals();
+}
+
+// --- ToothEntity 实现 ---
+ToothEntity::ToothEntity(int _id, std::shared_ptr<MyMesh> _mesh) : id(_id), mesh(_mesh) {
+	precompute();
+}
+
+void ToothEntity::precompute() {
+	// 修复断言错误：请求法线
+	mesh->request_vertex_normals();
+	mesh->request_face_normals();
+	mesh->update_normals();
+
+	// 1. OBB 计算
+	Eigen::Vector3d minP(1e10, 1e10, 1e10), maxP(-1e10, -1e10, -1e10);
+	std::vector<int> fIdxs;
+	for (auto f : mesh->faces()) fIdxs.push_back(f.idx());
+	for (auto v : mesh->vertices()) {
+		auto p = mesh->point(v);
+		for (int i = 0; i < 3; ++i) {
+			minP[i] = (std::min)(minP[i], (double)p[i]);
+			maxP[i] = (std::max)(maxP[i], (double)p[i]);
+		}
+	}
+	localOBB.center = (minP + maxP) * 0.5;
+	localOBB.extents = (maxP - minP) * 0.5;
+	for (int i = 0; i < 3; ++i) localOBB.axes[i] = Eigen::Vector3d::Unit(i);
+
+	// 2. 采样（记录位置与法线）
+	probeVertices.clear();
+	probeNormals.clear();
+	int step = (mesh->n_vertices() > 1000) ? (int)(mesh->n_vertices() / 1000) : 1;
+	int count = 0;
+	for (auto vh : mesh->vertices()) {
+		if (count % step == 0) {
+			auto p = mesh->point(vh);
+			auto n = mesh->normal(vh);
+			probeVertices.push_back(Eigen::Vector3d(p[0], p[1], p[2]));
+			probeNormals.push_back(Eigen::Vector3d(n[0], n[1], n[2]));
+		}
+		count++;
+	}
+	aabbTree = buildAABB(fIdxs);
+}
+
+std::shared_ptr<AABBNode> ToothEntity::buildAABB(std::vector<int>& fIdxs) {
+	auto node = std::make_shared<AABBNode>();
+	node->minP = Eigen::Vector3d::Constant(1e10);
+	node->maxP = Eigen::Vector3d::Constant(-1e10);
+
+	for (int idx : fIdxs) {
+		for (auto fv : mesh->fv_range(mesh->face_handle(idx))) {
+			const auto& p = mesh->point(fv);
+			for (int i = 0; i < 3; ++i) {
+				double val = static_cast<double>(p[i]);
+				if (val < node->minP[i]) node->minP[i] = val;
+				if (val > node->maxP[i]) node->maxP[i] = val;
+			}
+		}
+	}
+
+	if (fIdxs.size() <= 8) {
+		node->isLeaf = true;
+		node->faceIdx = fIdxs.empty() ? -1 : fIdxs[0];
+		node->left = node->right = nullptr;
+		return node;
+	}
+
+	node->isLeaf = false;
+	int axis = 0;
+	Eigen::Vector3d range = node->maxP - node->minP;
+	if (range[1] > range[0]) axis = 1;
+	if (range[2] > range[axis]) axis = 2;
+
+	struct FaceSortItem { int faceIdx; double coord; };
+	std::vector<FaceSortItem> sortList(fIdxs.size());
+	for (size_t i = 0; i < fIdxs.size(); ++i) {
+		sortList[i].faceIdx = fIdxs[i];
+		auto fv = mesh->fv_iter(mesh->face_handle(fIdxs[i]));
+		sortList[i].coord = static_cast<double>(mesh->point(*fv)[axis]);
+	}
+	std::sort(sortList.begin(), sortList.end(), [](const FaceSortItem& a, const FaceSortItem& b) {
+		return a.coord < b.coord;
+	});
+	for (size_t i = 0; i < fIdxs.size(); ++i) fIdxs[i] = sortList[i].faceIdx;
+
+	size_t mid = fIdxs.size() / 2;
+	std::vector<int> leftS(fIdxs.begin(), fIdxs.begin() + mid);
+	std::vector<int> rightS(fIdxs.begin() + mid, fIdxs.end());
+	node->left = buildAABB(leftS);
+	node->right = buildAABB(rightS);
+	return node;
+}
+
+double ToothEntity::pointTriangleDistanceSq(const Eigen::Vector3d& p, int fIdx,
+	Eigen::Vector3d& outNormal, Eigen::Vector3d& outClosestP) const {
+	auto f_h = mesh->face_handle(fIdx);
+	auto fv = mesh->fv_iter(f_h);
+	auto getV = [&](OpenMesh::SmartVertexHandle vh) {
+		const auto& pt = mesh->point(vh);
+		return Eigen::Vector3d(pt[0], pt[1], pt[2]);
+	};
+	Eigen::Vector3d a = getV(*(fv++)), b = getV(*(fv++)), c = getV(*fv);
+	outNormal = (b - a).cross(c - a).normalized();
+
+	Eigen::Vector3d ab = b - a, ac = c - a, ap = p - a;
+	double d1 = ab.dot(ap), d2 = ac.dot(ap);
+	if (d1 <= 0 && d2 <= 0) { outClosestP = a; return (p - a).squaredNorm(); }
+	Eigen::Vector3d bp = p - b;
+	double d3 = ab.dot(bp), d4 = ac.dot(bp);
+	if (d3 >= 0 && d4 <= d3) { outClosestP = b; return (p - b).squaredNorm(); }
+	double vc = d1 * d4 - d3 * d2;
+	if (vc <= 0 && d1 >= 0 && d3 <= 0) {
+		double v = d1 / (d1 - d3); outClosestP = a + v * ab; return (p - outClosestP).squaredNorm();
+	}
+	Eigen::Vector3d cp = p - c;
+	double d5 = ab.dot(cp), d6 = ac.dot(cp);
+	if (d6 >= 0 && d5 <= d6) { outClosestP = c; return (p - c).squaredNorm(); }
+	double vb = d5 * d2 - d1 * d6;
+	if (vb <= 0 && d2 >= 0 && d6 <= 0) {
+		double w = d2 / (d2 - d6); outClosestP = a + w * ac; return (p - outClosestP).squaredNorm();
+	}
+	double va = d3 * d6 - d5 * d4;
+	if (va <= 0 && (d4 - d3) >= 0 && (d5 - d6) >= 0) {
+		double w = (d4 - d3) / ((d4 - d3) + (d5 - d6)); outClosestP = b + w * (c - b); return (p - outClosestP).squaredNorm();
+	}
+	double denom = 1.0 / (va + vb + vc);
+	outClosestP = a + ab * (vb * denom) + ac * (vc * denom);
+	return (p - outClosestP).squaredNorm();
+}
+
+double ToothEntity::computeMeshDistance(const Eigen::Vector3d& p, const Eigen::Vector3d& scanDir) const {
+	double minSq = 1e10; // 这里存储绝对距离的平方，用于剪枝
+	double finalSign = 1.0;
+	Eigen::Vector3d bestCP;
+
+	auto search = [&](std::shared_ptr<AABBNode> n, auto& self) -> void {
+		if (!n) return;
+
+		// 剪枝判定必须使用正数
+		Eigen::Vector3d q = p.cwiseMax(n->minP).cwiseMin(n->maxP);
+		if ((q - p).squaredNorm() > minSq) return;
+
+		if (n->isLeaf) {
+			Eigen::Vector3d curN, curCP;
+			double dS = pointTriangleDistanceSq(p, n->faceIdx, curN, curCP);
+			if (dS < minSq) {
+				minSq = dS;
+				bestCP = curCP;
+				// 这里应用你说的“中心线靠谱”逻辑：
+				// Vp: 点指向面。如果 Vp 与 scanDir(A->B) 方向相反，
+				// 说明点 p 已经跑到了面 CP 的“后面”，即穿透。
+				Eigen::Vector3d Vp = curCP - p;
+				finalSign = (Vp.dot(scanDir) < 0) ? -1.0 : 1.0;
+			}
+		}
+		else {
+			self(n->left, self);
+			self(n->right, self);
+		}
+	};
+	search(aabbTree, search);
+
+	double rawDist = std::sqrt(minSq);
+
+	// 距离过远判定（防止非对位面干扰）
+	if (rawDist > 4.0) return rawDist;
+
+	return finalSign * rawDist;
+}
+
+// --- CollisionEngine 实现 ---
+
+void CollisionEngine::loadFromFolder(const std::string& folderPath) {
+	std::string searchP = folderPath + "/*.stl";
+	_finddata_t fileInfo;
+	intptr_t h = _findfirst(searchP.c_str(), &fileInfo);
+	if (h == -1) return;
+	std::map<int, std::shared_ptr<MyMesh>> mP;
+	do {
+		std::string name = fileInfo.name;
+		std::string idStr = "";
+		for (char c : name) if (isdigit(c)) idStr += c;
+		if (idStr.empty()) continue;
+		auto m = std::make_shared<MyMesh>();
+		if (OpenMesh::IO::read_mesh(*m, folderPath + "/" + name)) {
+			simplifyMesh(m, 300); // 恢复 300 面片简化
+			mP[std::stoi(idStr)] = m;
+		}
+	} while (_findnext(h, &fileInfo) == 0);
+	_findclose(h);
+	initialize(mP);
+}
+
+void CollisionEngine::initialize(const std::map<int, std::shared_ptr<MyMesh>>& meshMap) {
+	for (auto it = meshMap.begin(); it != meshMap.end(); ++it)
+		entities[it->first] = std::make_shared<ToothEntity>(it->first, it->second);
+}
+
+double CollisionEngine::calculateOBBGap(const OBB& a, const OBB& b) {
+	Eigen::Vector3d T = b.center - a.center;
+	double maxGap = -1e10;
+	for (int i = 0; i < 3; ++i) {
+		double ra = a.extents[i], rb = 0;
+		for (int j = 0; j < 3; ++j) rb += b.extents[j] * std::abs(a.axes[i].dot(b.axes[j]));
+		maxGap = (std::max)(maxGap, std::abs(T.dot(a.axes[i])) - (ra + rb));
+	}
+	return maxGap;
+}
+
+OBB CollisionEngine::transformOBB(const OBB& l, const Eigen::Affine3d& T) {
+	OBB w; w.center = T * l.center; w.extents = l.extents;
+	for (int i = 0; i < 3; ++i) w.axes[i] = T.linear() * l.axes[i];
+	return w;
+}
+
+CollisionResult CollisionEngine::computeCollision(int id1, const Eigen::Matrix4d& mat1, int id2, const Eigen::Matrix4d& mat2) {
+	if (!entities.count(id1) || !entities.count(id2)) return { false, 0.0 };
+	auto e1 = entities[id1]; auto e2 = entities[id2];
+	Eigen::Affine3d T1(mat1), T2(mat2);
+
+
+
+	//saveResultMesh(e1, T1, ".//x64//Release//transformed_e1.stl");
+	//saveResultMesh(e2, T2, ".//x64//Release//transformed_e2.stl");
+
+	// 1. OBB 粗测
+	OBB wOBB1 = transformOBB(e1->localOBB, T1);
+	OBB wOBB2 = transformOBB(e2->localOBB, T2);
+	//double obbG = calculateOBBGap(wOBB1, wOBB2);
+	//if (obbG > 0.0) return { false, obbG };
+
+	// 2. 计算可靠的扫描向量（全局空间）
+	// 方向：从牙齿 1 的中心指向牙齿 2 的中心
+	Eigen::Vector3d globalScanVec = (wOBB2.center - wOBB1.center).normalized();
+
+	double minSignedDist = 1e10;
+
+	// --- A 探测 B ---
+	// 需要把 globalScanVec 转到 B 的局部空间作为 e2->computeMeshDistance 的判定依据
+	Eigen::Vector3d scanDirInB = T2.linear().inverse() * globalScanVec;
+	Eigen::Affine3d T1to2 = T2.inverse() * T1;
+
+	for (const auto& vLocal : e1->probeVertices) {
+		Eigen::Vector3d pInB = T1to2 * vLocal;
+		// 传入改良后的中心连线向量
+		double d = e2->computeMeshDistance(pInB, scanDirInB);
+		if (d < minSignedDist) minSignedDist = d;
+	}
+
+	return { minSignedDist < 0.0, minSignedDist };
+}
+
+
+
+// 全局静态变量，用于在 DLL 生命周期内维持引擎对象
+static std::unique_ptr<CollisionEngine> g_engine = nullptr;
+
+extern "C" {
+
+	COLLISION_API int InitCollisionEngine(const char* folderPath) {
+		try {
+			g_engine = std::make_unique<CollisionEngine>();
+			// 调用之前代码中的 loadFromFolder 方法
+			g_engine->loadFromFolder(folderPath);
+			return 1;
+		}
+		catch (...) {
+			return 0;
+		}
+	}
+
+	COLLISION_API int ComputeToothCollision(int id1, double* mat1, int id2, double* mat2, double* outDistance) {
+		if (!g_engine) return 0;
+
+		// 使用 Eigen::Map 将传入的 double 数组映射为 4x4 矩阵
+		// Eigen 默认采用列主序（Column-major）存储
+		Eigen::Map<Eigen::Matrix4d> m1(mat1);
+		Eigen::Map<Eigen::Matrix4d> m2(mat2);
+
+		// 调用核心计算方法
+		CollisionResult res = g_engine->computeCollision(id1, m1, id2, m2);
+
+		if (outDistance) *outDistance = res.distance;
+
+		// 返回是否穿透的布尔标志
+		return res.is_colliding ? 1 : 0;
+	}
+
+	COLLISION_API void ReleaseCollisionEngine() {
+		if (g_engine) {
+			g_engine.reset();
+		}
+	}
+}
+
+
+
+
+
+
+
+#main.cpp
+#include "CollisionEngine.h"
+#include <iostream>
+
+int main22() {
+	CollisionEngine engine;
+	engine.loadFromFolder("./lower/"); // 确保目录下有数字命名的 STL
+
+	Eigen::Matrix4d m1 = Eigen::Matrix4d::Identity();
+	Eigen::Matrix4d m2 = Eigen::Matrix4d::Identity();
+
+	// 示例 1：OBB 间隙 (快速返回)
+	m2(0, 3) = 0.0;
+	auto res1 = engine.computeCollision(11, m1, 12, m2);
+	printf("Result 1: Dist=%.4f (OBB Gap)\n", res1.distance);
+
+	// 示例 2：OBB 碰撞但 Mesh 没碰 (返回 Mesh 间隙)
+	m2(1, 3) = -5.05;
+	auto res2 = engine.computeCollision(11, m1, 12, m2);
+	printf("Result 2: Dist=%.4f (Mesh Gap)\n", res2.distance);
+
+	// 示例 3：Mesh 穿透 (返回负值深度)
+	m2(0, 3) = 7.8;
+	auto res3 = engine.computeCollision(11, m1, 12, m2);
+	printf("Result 3: Dist=%.4f (Penetration)\n", res3.distance);
+
+	return 0;
+}
+
+
+
+
+
+#c++ dll test.cpp
+#include <iostream>
+#include <vector>
+#include "CollisionDLL.h" // 直接包含头文件
+
+int main() {
+	// 1. 初始化引擎：传入 STL 文件夹路径
+	const char* dataPath = "./lower/";
+	if (!InitCollisionEngine(dataPath)) {
+		std::cerr << "引擎初始化失败！" << std::endl;
+		return -1;
+	}
+	std::cout << "引擎初始化成功。" << std::endl;
+
+	// 2. 准备矩阵 (列主序 4x4)
+	// 牙齿 11 的矩阵（单位阵）
+	double mat1[16] = {
+		1, 0, 0, 0,
+		0, 1, 0, 0,
+		0, 0, 1, 0,
+		0, 0, 0, 1
+	};
+
+	// 牙齿 12 的矩阵（模拟平移到靠近 11 的位置）
+	double mat2[16] = {
+		1, 0, 0, 0,
+		0, 1, 0, 0,
+		0, 0, 1, 0,
+		0, 0, 0, 1  // 假设 X 方向平移了 5.2mm
+	};
+
+	double distance = 0.0;
+
+	// 3. 调用计算函数
+	// 传入牙齿 ID、矩阵指针和用于接收距离的变量地址
+	int isCollide = ComputeToothCollision(11, mat1, 12, mat2, &distance);
+
+	// 4. 输出结果
+	std::cout << "--------------------------------" << std::endl;
+	std::cout << "检测对象: 牙齿 11 vs 牙齿 12" << std::endl;
+	std::cout << "计算距离: " << distance << " mm" << std::endl;
+	std::cout << "碰撞状态: " << (isCollide ? "【穿透】" : "【安全】") << std::endl;
+	std::cout << "--------------------------------" << std::endl;
+
+	// 5. 退出前释放内存
+	ReleaseCollisionEngine();
+
+	return 0;
+}
+
+
+
+
+
+
+
+
