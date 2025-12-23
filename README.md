@@ -156,19 +156,20 @@ The effect is as follows, This should be a mediocre rendering, and it's the only
 Note: This is only a reference to the methods in the papers, not a reproduction.
 My capabilities are limited, for reference only.(水平有限，仅供参考)
 
-# Reference:
+5.1. Reference:
+   
 1.Li H, Liu M. An automatic teeth arrangement method based on an intelligent optimization algorithm and the Frenet–Serret formula[J]. Biomedical Signal Processing and Control, 2025, 105: 107606.
 
 2.Ping Y, Wei G, Wei G, et al. A Rule-Based Optimization Method for Tooth Alignment[J]. IEEE Transactions on Visualization and Computer Graphics, 2025.
 
-# Application
+5.2. Application
 1.Traditional_Multi-Objective_Particle_Swarm_Optimization(MOPSO).py  (Reference 1)
 
 2.Traditional_energy_minimization_arrangement(lbgfs).py   (Reference 2)
 
 3.Traditional_tooth_mesh_collsion(c++vs2017)  (Implementing mesh-to-mesh collision detection between two teeth in C++.)
 
-# Multi-Objective Optimization Energy Functions1. 
+5.3. sansas Multi-Objective Optimization Energy Funct
 1. Curve Attachment Energy
 
 Logic: Calculates the minimum Euclidean distance between the tooth’s current center (FA point) and the fitted arch curve.
@@ -211,9 +212,9 @@ Logic: Uses get_rot_vec to calculate the angular deviation between the tooth's i
 
 Objective: To ensure the "long axis" or mesiodistal orientation of each tooth follows the curvature of the arch, resulting in a neat, well-oriented alignment rather than random rotations.
 
-# Result
+5.4. Result
 <img width="1247" height="899" alt="lbgfs_tooth_arrangement" src="https://github.com/user-attachments/assets/16874b2a-fd06-4989-aa57-5e0a7c0881c5" />
-
+1.Left: Pre-alignment state; the arch tangent and the tooth tangent are not coincident. Right: Post-alignment state; the arch tangent and the tooth tangent are perfectly coincident.
 
 
    
