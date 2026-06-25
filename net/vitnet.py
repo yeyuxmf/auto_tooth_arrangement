@@ -123,7 +123,7 @@ class MaskedAutoencoderViT(nn.Module):
 
         x = torch.mean(x, dim=1)
         x = F.relu(self.linear21(x))
-        transv = 10*F.tanh(self.linear22(x))
+        transv = self.linear22(x)
         x = F.tanh(self.linear23(x))
         dofx = torch.nn.functional.normalize(x, dim=-1)
 
