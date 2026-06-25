@@ -59,7 +59,13 @@ class MaskedAutoencoderViT(nn.Module):
         self.linear21 = nn.Linear(embed_dim*5, embed_dim)
         self.linear22 = nn.Linear(embed_dim, 3)
         self.linear23 = nn.Linear(embed_dim, 4)
-
+        torch.nn.init.constant_(self.linear22.weight, 0.0)
+        torch.nn.init.constant_(self.linear22.bias, 1.0)  # 通常偏置初始化为0比较稳妥
+        torch.nn.init.constant_(self.linear23.weight, 0.0)
+        with torch.no_grad():
+            # 修正 self.self 拼写错误，且直接赋值 tensor 需要保持维度一致
+            self.linear23.bias.copy_(torch.tensor([1.0, 0.0, 0.0, 0.0]))
+            
         self.initialize_weights()
 
     def initialize_weights(self):
