@@ -140,6 +140,42 @@ def spatial_Relation_Loss(pred, target, weights, device):
     loss = torch.sum(loss) / weights.shape[0]
 
     return  loss
+def calculate_merot_quaternion(pred_quat, gt_quat, mask=None):
+    """
+        针对 K*4 输入计算 MErotate
+        pred_quat: [K, 4] 或 [B, K, 4]
+        gt_quat:   [K, 4] 或 [B, K, 4]
+        """
+    # 1. 确保是单位四元数 (Unit Quaternion)
+    #pred_quat = matrix_to_quaternion(rotation_6d_to_matrix(pred_quat))
 
+    angle_pre = torch.norm(quaternion_to_axis_angle(pred_quat), dim=-1) / mathpi.pi * 180.0
+    angle_gt = torch.norm(quaternion_to_axis_angle(gt_quat), dim=-1) / mathpi.pi * 180.0
+    merot = torch.mean(torch.abs(torch.sub(angle_pre, angle_gt)))
+
+
+    return merot
+
+#The calculation of the angle error between the model output from the current pose to 
+#the target pose and the relative rotation of the label using the calculate_merot_quaternion function above is incorrect.
+def quaternion_angle_error(pred_quat, gt_quat):
+    """
+    pred_quat, gt_quat: [K, 4] 或 [B, K, 4]，已符号对齐
+    返回: 标量（平均角度误差，度）
+    """
+    # 归一化
+    import math
+    pred_quat = F.normalize(pred_quat, dim=-1)
+    gt_quat = F.normalize(gt_quat, dim=-1)
+
+    # 点积（符号已对齐，不需要abs）
+    dot = (pred_quat * gt_quat).sum(dim=-1)
+    dot = torch.clamp(dot, -1.0, 1.0)
+
+    # 测地距离
+    angle_rad = 2.0 * torch.acos(torch.abs(dot))  # abs保险
+    angle_deg = angle_rad * 180.0 / math.pi
+
+    return angle_deg.mean()
 
 
